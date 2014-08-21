@@ -201,6 +201,11 @@ FWColorManager::FWColorManager(FWModelChangeManager* iManager):
 
    m_geomColor[kFWMuonBarrelLineColorIndex] = 1025;
    m_geomColor[kFWMuonEndcapLineColorIndex] = 1022;
+
+   //   m_geomColor[kFWHGCEEndcapColorIndex      ] = 1032;
+   m_geomColor[kFWHGCEEndcapColorIndex      ] = 1032;
+   m_geomColor[kFWHGCHEndcapFrontColorIndex ] = 1033;
+   m_geomColor[kFWHGCHEndcapBackColorIndex  ] = 1034;
 }
 
 FWColorManager::~FWColorManager()

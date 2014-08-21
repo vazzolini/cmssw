@@ -37,6 +37,12 @@
 #include "DataFormats/MuonDetId/interface/CSCDetId.h"
 #include "DataFormats/MuonDetId/interface/GEMDetId.h"
 
+// vir ------
+// #include "DataFormats/ForwardDetId/interface/HGCEEDetId.h"
+// #include "DataFormats/ForwardDetId/interface/HGCHEDetId.h"
+// #include "DataFormats/ForwardDetId/interface/HGCalDetId.h"
+
+
 //
 //
 //
@@ -50,6 +56,12 @@
 //
 // constructors and destructor
 //
+// vir
+//,
+//   m_HGCalEEndcapElements(0),
+//   m_HGCalHEndcapFrontElements(0),
+//   m_HGCalHEndcapBackElements(0)
+
 FWRPZViewGeometry::FWRPZViewGeometry(const fireworks::Context& context):
    FWViewGeometryList(context),
 

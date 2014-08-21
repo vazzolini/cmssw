@@ -48,6 +48,10 @@ public:
    void showTrackerBarrel( bool );
    void showTrackerEndcap( bool );
 
+   //void showHGCEE( bool );  // vir
+   //void showHGCHEF( bool ); // vir
+   //void showHGCHEB( bool ); // vir
+
 private:
    FWRPZViewGeometry(const FWRPZViewGeometry&); // stop default
    const FWRPZViewGeometry& operator=(const FWRPZViewGeometry&); // stop default
@@ -75,6 +79,11 @@ private:
    TEveElementList*   m_pixelEndcapElements;
    TEveElementList*   m_trackerBarrelElements;
    TEveElementList*   m_trackerEndcapElements;
+
+   //TEveElementList*   m_HGCalEEndcapElements;      // vir
+   //TEveElementList*   m_HGCalHEndcapFrontElements; // vir
+   //TEveElementList*   m_HGCalHEndcapBackElements;  // vir
+
 };
 
 

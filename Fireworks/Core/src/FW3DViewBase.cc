@@ -115,6 +115,9 @@ FW3DViewBase::FW3DViewBase(TEveWindowSlot* iParent, FWViewType::EType typeId):
    m_showPixelEndcap(this, "Show Pixel Endcap", false),
    m_showTrackerBarrel(this, "Show Tracker Barrel", false ),
    m_showTrackerEndcap(this, "Show Tracker Endcap", false),
+   m_showHGCEE(this,  "Show HGC E Endcap", false ),
+   m_showHGCHEF(this, "Show HGC H Endcap Front", false ),
+   m_showHGCHEB(this, "Show HGC H Endcap Back", false ),
    m_rnrStyle(this, "Render Style", 0l, 0l, 2l),
    m_clipParam(this, "View dependent Clip", false),
    m_selectable(this, "Enable Tooltips", false),
@@ -122,8 +125,9 @@ FW3DViewBase::FW3DViewBase(TEveWindowSlot* iParent, FWViewType::EType typeId):
    m_DMT(0),
    m_DMTline(0)
 {
-   viewerGL()->SetCurrentCamera(TGLViewer::kCameraPerspXOZ);
-   m_DMT = new FW3DViewDistanceMeasureTool();
+  //   m_showHGC(this,    "Show HGC Endcap", false ),
+  viewerGL()->SetCurrentCamera(TGLViewer::kCameraPerspXOZ);
+  m_DMT = new FW3DViewDistanceMeasureTool();
 
    m_showMuonBarrel.addEntry(0, "Hide");
    m_showMuonBarrel.addEntry(1, "Simplified");
@@ -166,6 +170,12 @@ void FW3DViewBase::setContext(const fireworks::Context& context)
    m_showTrackerBarrel.changed_.connect(boost::bind(&FW3DViewGeometry::showTrackerBarrel,m_geometry,_1));
    m_showTrackerEndcap.changed_.connect(boost::bind(&FW3DViewGeometry::showTrackerEndcap,m_geometry,_1));
    m_showMuonEndcap.changed_.connect(boost::bind(&FW3DViewGeometry::showMuonEndcap,m_geometry,_1));
+   //   m_showHGC.changed_.connect(boost::bind(&FW3DViewGeometry::showHGC,m_geometry,_1));       // vir
+   m_showHGCEE.changed_.connect(boost::bind(&FW3DViewGeometry::showHGCEE,m_geometry,_1));   // vir
+   m_showHGCHEF.changed_.connect(boost::bind(&FW3DViewGeometry::showHGCHEF,m_geometry,_1)); // vir
+   m_showHGCHEB.changed_.connect(boost::bind(&FW3DViewGeometry::showHGCHEB,m_geometry,_1)); // vir
+
+
    
    // don't clip event scene --  ideally, would have TGLClipNoClip in root
    TGLClipPlane* c=new TGLClipPlane();
@@ -292,11 +302,15 @@ FW3DViewBase::populateController(ViewerParameterGUI& gui) const
       addParam(&m_showTrackerEndcap).
       addParam(&m_showPixelBarrel).
       addParam(&m_showPixelEndcap).  
+      addParam(&m_showHGCEE).  
+      addParam(&m_showHGCHEF).  
+      addParam(&m_showHGCHEB).  
       separator().
       addParam(&m_rnrStyle).
       addParam(&m_clipParam).
       addParam(&m_selectable);
 
+   //addParam(&m_showHGC).  
 
    gui.requestTab("Style").separator();
    gui.getTabContainer()->AddFrame(new TGTextButton(gui.getTabContainer(), "Root controls",

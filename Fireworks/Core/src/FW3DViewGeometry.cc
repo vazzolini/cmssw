@@ -32,6 +32,19 @@
 
 #include "DataFormats/SiPixelDetId/interface/PXBDetId.h"
 #include "DataFormats/SiPixelDetId/interface/PXFDetId.h"
+
+// vir ------
+#include "DataFormats/ForwardDetId/interface/HGCEEDetId.h"
+#include "DataFormats/ForwardDetId/interface/HGCHEDetId.h"
+#include "DataFormats/ForwardDetId/interface/HGCalDetId.h"
+#include "TEveBox.h"
+
+
+// #include "Geometry/CaloGeometry/interface/FlatTrd.h"
+// #include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
+// #include "CLHEP/Geometry/Point3D.h"
+
+
 //
 // constants, enums and typedefs
 //
@@ -50,10 +63,10 @@ FW3DViewGeometry::FW3DViewGeometry(const fireworks::Context& context):
    m_pixelBarrelElements(0),
    m_pixelEndcapElements(0),
    m_trackerBarrelElements(0),
-   m_trackerEndcapElements(0)
+   m_trackerEndcapElements(0),
+   m_HGCalEEndcapElements(0),m_HGCalHEndcapFrontElements(0),m_HGCalHEndcapBackElements(0)
 {  
-
-   SetElementName("3D Geometry");
+  SetElementName("3D Geometry");
 }
 
 // FW3DViewGeometry::FW3DViewGeometry(const FW3DViewGeometry& rhs)
@@ -389,5 +402,193 @@ FW3DViewGeometry::showTrackerEndcap( bool showTrackerEndcap )
       gEve->Redraw3D();
    }
 }
+//______________________________________________________________________________
+//____ All the 3 HGC together __________________________________________________
+/*
+void 
+FW3DViewGeometry::showHGC( bool showHGC )
+{
+  if( showHGC && !m_HGCalEndcapElements )
+    {
+      m_HGCalEndcapElements = new TEveElementList( "HGC EndCap" );
 
- 
+      // ----- showHGC EE --------------------------------------------------
+      std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCEE );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+
+	  // TEveGeoShape* shape = m_geom->getEveShape( *id ); // old vir
+	  // HGCEEDetId idid = HGCEEDetId( *id );              // old vir
+	  
+	  // --  instead of m_geom->getEveShape( *id )-----
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box, kFWHGCEEndcapColorIndex);
+	  m_HGCalEndcapElements->AddElement( box );
+	  gEve->AddElement(box); //? maybe
+	  gEve->Redraw3D(kTRUE); //? maybe
+	  // -----------------------------------------------
+	  //  addToCompound(shape, kFWHGCEEndcapColorIndex); // old vir
+	  //  m_HGCalEEndcapElements->AddElement( shape ); // old vir	  
+	}
+      // ----- showHGC HEF --------------------------------------------------
+      ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEF );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box,  kFWHGCHEndcapFrontColorIndex);
+	  m_HGCalEndcapElements->AddElement( box );
+	}
+
+      // ----- showHGC HEB --------------------------------------------------
+      ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEB );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box,  kFWHGCHEndcapBackColorIndex);
+	  m_HGCalEndcapElements->AddElement( box );
+	}
+      // ------------------------------------------------------------------
+
+      AddElement( m_HGCalEEndcapElements );
+    }
+
+  if ( m_HGCalEndcapElements )
+    {
+      m_HGCalEndcapElements->SetRnrState( showHGC );
+      gEve->Redraw3D();
+    }
+}
+
+
+*/
+
+
+//______________________________________________________________________________
+void 
+FW3DViewGeometry::showHGCEE( bool showHGCEE )
+{
+  if( showHGCEE && !m_HGCalEEndcapElements )
+    {
+      m_HGCalEEndcapElements = new TEveElementList( "E EndCap" );
+
+      // ----- showHGC EE --------------------------------------------------
+      std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCEE );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+
+	  // TEveGeoShape* shape = m_geom->getEveShape( *id ); // old vir
+	  // HGCEEDetId idid = HGCEEDetId( *id );              // old vir
+	  
+	  // --  instead of m_geom->getEveShape( *id )-----
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box, kFWHGCEEndcapColorIndex);
+	  m_HGCalEEndcapElements->AddElement( box );
+	  gEve->AddElement(box); //? maybe
+	  gEve->Redraw3D(kTRUE); //? maybe
+	  // -----------------------------------------------
+	  //  addToCompound(shape, kFWHGCEEndcapColorIndex); // old vir
+	  //  m_HGCalEEndcapElements->AddElement( shape ); // old vir	  
+	}
+      AddElement( m_HGCalEEndcapElements );
+    }
+  
+  if ( m_HGCalEEndcapElements )
+    {
+      m_HGCalEEndcapElements->SetRnrState( showHGCEE );
+      gEve->Redraw3D();
+    }
+}
+
+//______________________________________________________________________________
+void 
+FW3DViewGeometry::showHGCHEF( bool showHGCHEF )
+{
+  if( showHGCHEF && !m_HGCalHEndcapFrontElements )
+    {
+      m_HGCalHEndcapFrontElements = new TEveElementList( "H EndCap Front" );
+      std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEF );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+	  // TEveGeoShape* shape = m_geom->getEveShape( *id );
+	  // --  instead of m_geom->getEveShape( *id )-----
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box,  kFWHGCHEndcapFrontColorIndex);
+	  m_HGCalHEndcapFrontElements->AddElement( box );
+	  gEve->AddElement(box); //? maybe
+	  gEve->Redraw3D(kTRUE); //? maybe
+	  // -----------------------------------------------
+	  //addToCompound(shape, kFWHGCHEndcapFrontColorIndex);
+	  //m_HGCalHEndcapFrontElements->AddElement( shape );	  
+	}
+      AddElement( m_HGCalHEndcapFrontElements );
+    }
+
+  if ( m_HGCalHEndcapFrontElements )
+    {
+      m_HGCalHEndcapFrontElements->SetRnrState( showHGCHEF );
+      gEve->Redraw3D();
+    }
+}
+//______________________________________________________________________________
+void 
+FW3DViewGeometry::showHGCHEB( bool showHGCHEB )
+{
+  if( showHGCHEB && !m_HGCalHEndcapBackElements )
+    {
+      m_HGCalHEndcapBackElements = new TEveElementList( "H EndCap Back" );
+      std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEB );
+      for( std::vector<unsigned int>::const_iterator id = ids.begin();
+	   id != ids.end(); ++id )
+	{
+	  // TEveGeoShape* shape = m_geom->getEveShape( *id );
+	   // --  instead of m_geom->getEveShape( *id )-----
+	  const float* pnts = m_geom->getCorners( *id );
+	  TEveBox* box = new TEveBox();
+	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+	  for( int i = 0;  i < 8; ++i){
+	    box->SetVertex(i, &pnts[3-arr[i]]);}
+	  addToCompound(box, kFWHGCHEndcapBackColorIndex);
+	  m_HGCalHEndcapBackElements->AddElement( box );
+	  gEve->AddElement(box); //? maybe
+	  gEve->Redraw3D(kTRUE); //? maybe
+	  // -----------------------------------------------
+	  //addToCompound(shape, kFWHGCHEndcapBackColorIndex);
+	  //m_HGCalHEndcapBackElements->AddElement( shape );	  
+	}
+      AddElement( m_HGCalHEndcapBackElements );
+    }
+
+  if ( m_HGCalHEndcapBackElements )
+    {
+      m_HGCalHEndcapBackElements->SetRnrState( showHGCHEB );
+      gEve->Redraw3D();
+    }
+}
+//______________________________________________________________________________
+
+

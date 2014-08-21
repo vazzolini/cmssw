@@ -236,7 +236,7 @@ FWGeometry::getEveShape( unsigned int id  ) const
    IdToInfoItr it = FWGeometry::find( id );
    if( it == m_idToInfo.end())
    {
-      fwLog( fwlog::kWarning ) << "no reco geoemtry found for id " <<  id << std::endl;
+      fwLog( fwlog::kWarning ) << "no reco geometry found for id " <<  id << std::endl;
       return 0;
    }
    else

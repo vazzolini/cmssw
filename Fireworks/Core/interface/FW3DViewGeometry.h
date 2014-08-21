@@ -48,6 +48,13 @@ public:
    void showPixelEndcap( bool );
    void showTrackerBarrel( bool );
    void showTrackerEndcap( bool );
+   
+   //   void showHGC( bool );  // vir
+   
+   void showHGCEE( bool );  // vir
+   void showHGCHEF( bool ); // vir
+   void showHGCHEB( bool ); // vir
+   
 private:
    FW3DViewGeometry(const FW3DViewGeometry&); // stop default
 
@@ -63,6 +70,14 @@ private:
    TEveElementList*   m_pixelEndcapElements;
    TEveElementList*   m_trackerBarrelElements;
    TEveElementList*   m_trackerEndcapElements;
+
+   // TEveElementList*   m_HGCalEndcapElements;      // vir
+
+   TEveElementList*   m_HGCalEEndcapElements;      // vir
+   TEveElementList*   m_HGCalHEndcapFrontElements; // vir
+   TEveElementList*   m_HGCalHEndcapBackElements;  // vir
+
+
 };
 
 #endif

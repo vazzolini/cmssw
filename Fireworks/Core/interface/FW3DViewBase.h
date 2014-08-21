@@ -79,6 +79,12 @@ private:
    FWBoolParameter m_showTrackerBarrel;
    FWBoolParameter m_showTrackerEndcap;
 
+   //   FWBoolParameter m_showHGC;    // vir
+   FWBoolParameter m_showHGCEE;  // vir
+   FWBoolParameter m_showHGCHEF; // vir
+   FWBoolParameter m_showHGCHEB; // vir
+
+
    FWEnumParameter m_rnrStyle;
    FWBoolParameter m_clipParam;
    FWBoolParameter m_selectable;
