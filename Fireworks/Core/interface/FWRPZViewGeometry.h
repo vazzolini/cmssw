@@ -79,7 +79,8 @@ private:
    TEveElementList*   m_pixelEndcapElements;
    TEveElementList*   m_trackerBarrelElements;
    TEveElementList*   m_trackerEndcapElements;
-
+   TEveElementList*   m_rpcEndcapElements;
+   TEveElementList*   m_GEMElements;
    //TEveElementList*   m_HGCalEEndcapElements;      // vir
    //TEveElementList*   m_HGCalHEndcapFrontElements; // vir
    //TEveElementList*   m_HGCalHEndcapBackElements;  // vir
