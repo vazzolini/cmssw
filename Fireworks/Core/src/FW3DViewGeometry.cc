@@ -57,14 +57,14 @@
 // constructors and destructor
 //
 FW3DViewGeometry::FW3DViewGeometry(const fireworks::Context& context):
-   FWViewGeometryList(context, false),
-   m_muonBarrelElements(0), m_muonBarrelFullElements(0),
-   m_muonEndcapElements(0), m_muonEndcapFullElements(0),
-   m_pixelBarrelElements(0),
-   m_pixelEndcapElements(0),
-   m_trackerBarrelElements(0),
-   m_trackerEndcapElements(0),
-   m_HGCalEEndcapElements(0),m_HGCalHEndcapFrontElements(0),m_HGCalHEndcapBackElements(0)
+  FWViewGeometryList(context, false),
+  m_muonBarrelElements(0), m_muonBarrelFullElements(0),
+  m_muonEndcapElements(0), m_muonEndcapFullElements(0),
+  m_pixelBarrelElements(0),
+  m_pixelEndcapElements(0),
+  m_trackerBarrelElements(0),
+  m_trackerEndcapElements(0),
+  m_HGCalEEndcapElements(0),m_HGCalHEndcapFrontElements(0),m_HGCalHEndcapBackElements(0)
 {  
   SetElementName("3D Geometry");
 }
@@ -94,391 +94,392 @@ FW3DViewGeometry::~FW3DViewGeometry()
 void
 FW3DViewGeometry::showMuonBarrel( bool showMuonBarrel )
 {
-   if( !m_muonBarrelElements && showMuonBarrel )
-   {
+  if( !m_muonBarrelElements && showMuonBarrel )
+    {
       m_muonBarrelElements = new TEveElementList( "DT" );
       for( Int_t iWheel = -2; iWheel <= 2; ++iWheel )
-      {
-         for ( Int_t iStation = 1; iStation <= 4; ++iStation )
-         {
-	    // We display only the outer chambers to make the event look more
-	    // prominent
-	    if( iWheel == -2 || iWheel == 2 || iStation == 4 )
+	{
+	  for ( Int_t iStation = 1; iStation <= 4; ++iStation )
 	    {
-	       std::ostringstream s;
-	       s << "Station" << iStation;
-	       TEveElementList* cStation  = new TEveElementList( s.str().c_str() );
-	       m_muonBarrelElements->AddElement( cStation );
-	       for( Int_t iSector = 1 ; iSector <= 14; ++iSector )
-	       {
-		  if( iStation < 4 && iSector > 12 ) continue;
-		  DTChamberId id( iWheel, iStation, iSector );
-		  TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
-                  addToCompound(shape, kFWMuonBarrelLineColorIndex);
-		  cStation->AddElement( shape );
-	       }
+	      // We display only the outer chambers to make the event look more
+	      // prominent
+	      if( iWheel == -2 || iWheel == 2 || iStation == 4 )
+		{
+		  std::ostringstream s;
+		  s << "Station" << iStation;
+		  TEveElementList* cStation  = new TEveElementList( s.str().c_str() );
+		  m_muonBarrelElements->AddElement( cStation );
+		  for( Int_t iSector = 1 ; iSector <= 14; ++iSector )
+		    {
+		      if( iStation < 4 && iSector > 12 ) continue;
+		      DTChamberId id( iWheel, iStation, iSector );
+		      TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
+		      addToCompound(shape, kFWMuonBarrelLineColorIndex);
+		      cStation->AddElement( shape );
+		    }
+		}
 	    }
-         }
-      }
+	}
       AddElement( m_muonBarrelElements );
-   }
+    }
 
-   if( m_muonBarrelElements )
-   {
+  if( m_muonBarrelElements )
+    {
       m_muonBarrelElements->SetRnrState( showMuonBarrel );
       gEve->Redraw3D();
-   }
+    }
 }
 
 void
 FW3DViewGeometry::showMuonBarrelFull(bool showMuonBarrel)
 {
-   if (!m_muonBarrelFullElements && showMuonBarrel)
-   {
+  if (!m_muonBarrelFullElements && showMuonBarrel)
+    {
       m_muonBarrelFullElements = new TEveElementList( "DT Full" );
       for (Int_t iWheel = -2; iWheel <= 2; ++iWheel)
-      {
-         TEveElementList* cWheel = new TEveElementList(TString::Format("Wheel %d", iWheel));
-         m_muonBarrelFullElements->AddElement(cWheel);
-         for (Int_t iStation = 1; iStation <= 4; ++iStation)
-         {
-            TEveElementList* cStation  = new TEveElementList(TString::Format("Station %d", iStation));
-            cWheel->AddElement(cStation);
-            for (Int_t iSector = 1 ; iSector <= 14; ++iSector)
-            {
-               if( iStation < 4 && iSector > 12 ) continue;
-               DTChamberId id( iWheel, iStation, iSector );
-               TEveGeoShape* shape = m_geom->getEveShape(id.rawId());
-               shape->SetTitle(TString::Format("DT: W=%d, S=%d, Sec=%d\ndet-id=%u",
-                                               iWheel, iStation, iSector, id.rawId()));
-               addToCompound(shape, kFWMuonBarrelLineColorIndex);
-               cStation->AddElement(shape);
-            }
-         }
-      }
+	{
+	  TEveElementList* cWheel = new TEveElementList(TString::Format("Wheel %d", iWheel));
+	  m_muonBarrelFullElements->AddElement(cWheel);
+	  for (Int_t iStation = 1; iStation <= 4; ++iStation)
+	    {
+	      TEveElementList* cStation  = new TEveElementList(TString::Format("Station %d", iStation));
+	      cWheel->AddElement(cStation);
+	      for (Int_t iSector = 1 ; iSector <= 14; ++iSector)
+		{
+		  if( iStation < 4 && iSector > 12 ) continue;
+		  DTChamberId id( iWheel, iStation, iSector );
+		  TEveGeoShape* shape = m_geom->getEveShape(id.rawId());
+		  shape->SetTitle(TString::Format("DT: W=%d, S=%d, Sec=%d\ndet-id=%u",
+						  iWheel, iStation, iSector, id.rawId()));
+		  addToCompound(shape, kFWMuonBarrelLineColorIndex);
+		  cStation->AddElement(shape);
+		}
+	    }
+	}
       AddElement(m_muonBarrelFullElements);
-   }
+    }
 
-   if (m_muonBarrelFullElements)
-   {
+  if (m_muonBarrelFullElements)
+    {
       m_muonBarrelFullElements->SetRnrState(showMuonBarrel);
       gEve->Redraw3D();
-   }
+    }
 }
 
 //______________________________________________________________________________
 void
 FW3DViewGeometry::showMuonEndcap( bool showMuonEndcap )
 {
-   if( showMuonEndcap && !m_muonEndcapElements )
-   {
+  if( showMuonEndcap && !m_muonEndcapElements )
+    {
       m_muonEndcapElements = new TEveElementList( "EndCap" );
 
       for( Int_t iEndcap = 1; iEndcap <= 2; ++iEndcap ) // 1=forward (+Z), 2=backward(-Z)
-      { 
-         TEveElementList* cEndcap = 0;
-         if( iEndcap == 1 )
+	{ 
+	  TEveElementList* cEndcap = 0;
+	  if( iEndcap == 1 )
             cEndcap = new TEveElementList( "CSC Forward" );
-         else
+	  else
             cEndcap = new TEveElementList( "CSC Backward" );
-         m_muonEndcapElements->AddElement( cEndcap );
-	 // Actual CSC geometry:
-	 // Station 1 has 4 rings with 36 chambers in each
-	 // Station 2: ring 1 has 18 chambers, ring 2 has 36 chambers
-	 // Station 3: ring 1 has 18 chambers, ring 2 has 36 chambers
-	 // Station 4: ring 1 has 18 chambers
-	 Int_t maxChambers = 36;
-         for( Int_t iStation = 1; iStation <= 4; ++iStation )
-         {
-            std::ostringstream s; s << "Station" << iStation;
-            TEveElementList* cStation  = new TEveElementList( s.str().c_str() );
-            cEndcap->AddElement( cStation );
-            for( Int_t iRing = 1; iRing <= 4; ++iRing )
+	  m_muonEndcapElements->AddElement( cEndcap );
+	  // Actual CSC geometry:
+	  // Station 1 has 4 rings with 36 chambers in each
+	  // Station 2: ring 1 has 18 chambers, ring 2 has 36 chambers
+	  // Station 3: ring 1 has 18 chambers, ring 2 has 36 chambers
+	  // Station 4: ring 1 has 18 chambers
+	  Int_t maxChambers = 36;
+	  for( Int_t iStation = 1; iStation <= 4; ++iStation )
 	    {
-               if( iStation > 1 && iRing > 2 ) continue;
-               if( iStation > 3 && iRing > 1 ) continue;
-               std::ostringstream s; s << "Ring" << iRing;
-               TEveElementList* cRing  = new TEveElementList( s.str().c_str() );
-               cStation->AddElement( cRing );
-	       ( iRing == 1 && iStation > 1 ) ? ( maxChambers = 18 ) : ( maxChambers = 36 );
-               for( Int_t iChamber = 1; iChamber <= maxChambers; ++iChamber )
-               {
-                  Int_t iLayer = 0; // chamber
-		  CSCDetId id( iEndcap, iStation, iRing, iChamber, iLayer );
-		  TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
-                  shape->SetTitle(TString::Format("CSC: %s, S=%d, R=%d, C=%d\ndet-id=%u",
-                                                  cEndcap->GetName(), iStation, iRing, iChamber, id.rawId()));
+	      std::ostringstream s; s << "Station" << iStation;
+	      TEveElementList* cStation  = new TEveElementList( s.str().c_str() );
+	      cEndcap->AddElement( cStation );
+	      for( Int_t iRing = 1; iRing <= 4; ++iRing )
+		{
+		  if( iStation > 1 && iRing > 2 ) continue;
+		  if( iStation > 3 && iRing > 1 ) continue;
+		  std::ostringstream s; s << "Ring" << iRing;
+		  TEveElementList* cRing  = new TEveElementList( s.str().c_str() );
+		  cStation->AddElement( cRing );
+		  ( iRing == 1 && iStation > 1 ) ? ( maxChambers = 18 ) : ( maxChambers = 36 );
+		  for( Int_t iChamber = 1; iChamber <= maxChambers; ++iChamber )
+		    {
+		      Int_t iLayer = 0; // chamber
+		      CSCDetId id( iEndcap, iStation, iRing, iChamber, iLayer );
+		      TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
+		      shape->SetTitle(TString::Format("CSC: %s, S=%d, R=%d, C=%d\ndet-id=%u",
+						      cEndcap->GetName(), iStation, iRing, iChamber, id.rawId()));
  	  	            
-                  addToCompound(shape, kFWMuonEndcapLineColorIndex);
-		  cRing->AddElement( shape );
-               }
-            }
-	 }
-      }
+		      addToCompound(shape, kFWMuonEndcapLineColorIndex);
+		      cRing->AddElement( shape );
+		    }
+		}
+	    }
+	}
 
       //  m_muonEndcapElements->AddElement(CSClist);
 
 
       TEveElementList*  GEMlist = new TEveCompound( "GEM" );     
       for( Int_t iRegion = GEMDetId::minRegionId; iRegion <= GEMDetId::maxRegionId; ++iRegion )
-      {
-         for( Int_t iStation = GEMDetId::minStationId; iStation <= GEMDetId::maxStationId; ++iStation )
-         {
-            TEveElementList* cStation  = new TEveCompound(Form("Station_%d Region_%d", iStation, iRegion) );
+	{
+	  for( Int_t iStation = GEMDetId::minStationId; iStation <= GEMDetId::maxStationId; ++iStation )
+	    {
+	      TEveElementList* cStation  = new TEveCompound(Form("Station_%d Region_%d", iStation, iRegion) );
               GEMlist->AddElement( cStation );
-            for( Int_t iRing =  GEMDetId::minRingId; iRing <= GEMDetId::maxRingId; ++iRing )
-            {
-               TEveCompound* cRing  = new TEveCompound( Form("Ring_%d", iRing) );
-                cStation->AddElement( cRing );
-               for( Int_t iChamber = GEMDetId::minChamberId; iChamber <= GEMDetId::maxChamberId; ++iChamber )
-               {
-                  for( Int_t iLayer = GEMDetId::minLayerId; iLayer <= GEMDetId::maxLayerId ; ++iLayer )
-                  {
-                     for (Int_t iRoll = GEMDetId::minRollId; iRoll <= GEMDetId::maxRollId ; ++iRoll )
-                     {
-                        GEMDetId id( iRegion, iRing, iStation, iLayer, iChamber, iRoll );
-                        TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
-                        shape->SetTitle(TString::Format("GEM: , Rng=%d, St=%d, Ch=%d Rl=%d\ndet-id=%u",
-                                                        iRing, iStation, iChamber, iRoll, id.rawId()));
+	      for( Int_t iRing =  GEMDetId::minRingId; iRing <= GEMDetId::maxRingId; ++iRing )
+		{
+		  TEveCompound* cRing  = new TEveCompound( Form("Ring_%d", iRing) );
+		  cStation->AddElement( cRing );
+		  for( Int_t iChamber = GEMDetId::minChamberId; iChamber <= GEMDetId::maxChamberId; ++iChamber )
+		    {
+		      for( Int_t iLayer = GEMDetId::minLayerId; iLayer <= GEMDetId::maxLayerId ; ++iLayer )
+			{
+			  for (Int_t iRoll = GEMDetId::minRollId; iRoll <= GEMDetId::maxRollId ; ++iRoll )
+			    {
+			      GEMDetId id( iRegion, iRing, iStation, iLayer, iChamber, iRoll );
+			      TEveGeoShape* shape = m_geom->getEveShape( id.rawId() );
+			      shape->SetTitle(TString::Format("GEM: , Rng=%d, St=%d, Ch=%d Rl=%d\ndet-id=%u",
+							      iRing, iStation, iChamber, iRoll, id.rawId()));
  	  	            
-                        cRing->AddElement( shape );
-                        addToCompound(shape, kFWMuonEndcapLineColorIndex );
-                     }
-                  }
-               }
-            }
-         }
-      }
+			      cRing->AddElement( shape );
+			      addToCompound(shape, kFWMuonEndcapLineColorIndex );
+			    }
+			}
+		    }
+		}
+	    }
+	}
       m_muonEndcapElements->AddElement(GEMlist);
 
       // EVE debug :: add list on bottom of TEveBrowser list tree
       gEve->AddToListTree(GEMlist, false);
       AddElement( m_muonEndcapElements );
 
-   }
+    }
 
-   if( m_muonEndcapElements )
-   {
+  if( m_muonEndcapElements )
+    {
       m_muonEndcapElements->SetRnrState( showMuonEndcap );
       gEve->Redraw3D();
-   }
+    }
 }
 
 //______________________________________________________________________________
 void
 FW3DViewGeometry::showPixelBarrel( bool showPixelBarrel )
 {
-   if( showPixelBarrel && !m_pixelBarrelElements )
-   {
+  if( showPixelBarrel && !m_pixelBarrelElements )
+    {
       m_pixelBarrelElements = new TEveElementList( "PixelBarrel" );
       m_pixelBarrelElements->SetRnrState( showPixelBarrel );
       std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::PixelBarrel );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
 	   id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id );
-	 PXBDetId idid = PXBDetId( *id );
-	 unsigned int layer = idid.layer();
-	 unsigned int ladder = idid.ladder();
-	 unsigned int module = idid.module();
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id );
+	  PXBDetId idid = PXBDetId( *id );
+	  unsigned int layer = idid.layer();
+	  unsigned int ladder = idid.ladder();
+	  unsigned int module = idid.module();
 	 
-         shape->SetTitle( TString::Format( "PixelBarrel %d: Layer=%u, Ladder=%u, Module=%u",
-					   *id, layer, ladder, module ));
+	  shape->SetTitle( TString::Format( "PixelBarrel %d: Layer=%u, Ladder=%u, Module=%u",
+					    *id, layer, ladder, module ));
 
-         addToCompound(shape, kFWPixelBarrelColorIndex);
-         m_pixelBarrelElements->AddElement( shape );
-      }
+	  addToCompound(shape, kFWPixelBarrelColorIndex);
+	  m_pixelBarrelElements->AddElement( shape );
+	}
       AddElement( m_pixelBarrelElements );
-   }
+    }
 
-   if( m_pixelBarrelElements )
-   {
+  if( m_pixelBarrelElements )
+    {
       m_pixelBarrelElements->SetRnrState( showPixelBarrel );
       gEve->Redraw3D();
-   }
+    }
 }
 
 //______________________________________________________________________________
 void
 FW3DViewGeometry::showPixelEndcap(bool  showPixelEndcap )
 {
-   if( showPixelEndcap && ! m_pixelEndcapElements )
-   {
+  if( showPixelEndcap && ! m_pixelEndcapElements )
+    {
       m_pixelEndcapElements = new TEveElementList( "PixelEndcap" );
       std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::PixelEndcap );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
 	   id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id );
-	 PXFDetId idid = PXFDetId( *id );
-	 unsigned int side = idid.side();
-	 unsigned int disk = idid.disk();
-	 unsigned int blade = idid.blade();
-	 unsigned int panel = idid.panel();
-	 unsigned int module = idid.module();
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id );
+	  PXFDetId idid = PXFDetId( *id );
+	  unsigned int side = idid.side();
+	  unsigned int disk = idid.disk();
+	  unsigned int blade = idid.blade();
+	  unsigned int panel = idid.panel();
+	  unsigned int module = idid.module();
 
-         shape->SetTitle( TString::Format( "PixelEndcap %d: Side=%u, Disk=%u, Blade=%u, Panel=%u, Module=%u",
-					   *id, side, disk, blade, panel, module ));
+	  shape->SetTitle( TString::Format( "PixelEndcap %d: Side=%u, Disk=%u, Blade=%u, Panel=%u, Module=%u",
+					    *id, side, disk, blade, panel, module ));
 	 
-         addToCompound(shape, kFWPixelEndcapColorIndex);
-         m_pixelEndcapElements->AddElement( shape );
-      }
+	  addToCompound(shape, kFWPixelEndcapColorIndex);
+	  m_pixelEndcapElements->AddElement( shape );
+	}
       AddElement( m_pixelEndcapElements );
-   }
+    }
 
-   if( m_pixelEndcapElements )
-   {
+  if( m_pixelEndcapElements )
+    {
       m_pixelEndcapElements->SetRnrState( showPixelEndcap );
       gEve->Redraw3D();
-   }
+    }
 }
 
 //______________________________________________________________________________
 void
 FW3DViewGeometry::showTrackerBarrel( bool  showTrackerBarrel )
 {
-   if( showTrackerBarrel && ! m_trackerBarrelElements )
-   {
+  if( showTrackerBarrel && ! m_trackerBarrelElements )
+    {
       m_trackerBarrelElements = new TEveElementList( "TrackerBarrel" );
       m_trackerBarrelElements->SetRnrState( showTrackerBarrel );
       std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::TIB );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
 	   id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id ); 
-         addToCompound(shape, kFWTrackerBarrelColorIndex);
-         m_trackerBarrelElements->AddElement( shape );
-      }
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id ); 
+	  addToCompound(shape, kFWTrackerBarrelColorIndex);
+	  m_trackerBarrelElements->AddElement( shape );
+	}
       ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::TOB );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
 	   id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id );
-         shape->SetTitle(Form("TrackerBarrel %d",*id));
-         addToCompound(shape, kFWTrackerBarrelColorIndex);
-         m_trackerBarrelElements->AddElement( shape );
-      }
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id );
+	  shape->SetTitle(Form("TrackerBarrel %d",*id));
+	  addToCompound(shape, kFWTrackerBarrelColorIndex);
+	  m_trackerBarrelElements->AddElement( shape );
+	}
       AddElement( m_trackerBarrelElements );
-   }
+    }
 
-   if( m_trackerBarrelElements )
-   {
+  if( m_trackerBarrelElements )
+    {
       m_trackerBarrelElements->SetRnrState( showTrackerBarrel );
       gEve->Redraw3D();
-   }
+    }
 }
 
 //______________________________________________________________________________
 void
 FW3DViewGeometry::showTrackerEndcap( bool showTrackerEndcap )
 {
-   if( showTrackerEndcap && ! m_trackerEndcapElements )
-   {
+  if( showTrackerEndcap && ! m_trackerEndcapElements )
+    {
       m_trackerEndcapElements = new TEveElementList( "TrackerEndcap" );
       std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::TID );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
            id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id );
-         addToCompound(shape, kFWTrackerEndcapColorIndex);
-         m_trackerEndcapElements->AddElement( shape );
-      }
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id );
+	  addToCompound(shape, kFWTrackerEndcapColorIndex);
+	  m_trackerEndcapElements->AddElement( shape );
+	}
       ids = m_geom->getMatchedIds( FWGeometry::Tracker, FWGeometry::TEC );
       for( std::vector<unsigned int>::const_iterator id = ids.begin();
 	   id != ids.end(); ++id )
-      {
-	 TEveGeoShape* shape = m_geom->getEveShape( *id );
+	{
+	  TEveGeoShape* shape = m_geom->getEveShape( *id );
 
-         shape->SetTitle(Form("TrackerEndcap %d",*id));
-         addToCompound(shape, kFWTrackerEndcapColorIndex);
-         m_trackerEndcapElements->AddElement( shape );
-      }
+	  shape->SetTitle(Form("TrackerEndcap %d",*id));
+	  addToCompound(shape, kFWTrackerEndcapColorIndex);
+	  m_trackerEndcapElements->AddElement( shape );
+	}
       AddElement( m_trackerEndcapElements );
-   }
+    }
 
-   if (m_trackerEndcapElements )
-   {
+  if (m_trackerEndcapElements )
+    {
       m_trackerEndcapElements->SetRnrState( showTrackerEndcap );
       gEve->Redraw3D();
-   }
+    }
 }
 //______________________________________________________________________________
 //____ All the 3 HGC together __________________________________________________
 /*
-void 
-FW3DViewGeometry::showHGC( bool showHGC )
-{
+  void 
+  FW3DViewGeometry::showHGC( bool showHGC )
+  {
   if( showHGC && !m_HGCalEndcapElements )
-    {
-      m_HGCalEndcapElements = new TEveElementList( "HGC EndCap" );
-
-      // ----- showHGC EE --------------------------------------------------
-      std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCEE );
-      for( std::vector<unsigned int>::const_iterator id = ids.begin();
-	   id != ids.end(); ++id )
-	{
-
-	  // TEveGeoShape* shape = m_geom->getEveShape( *id ); // old vir
-	  // HGCEEDetId idid = HGCEEDetId( *id );              // old vir
+  {
+  m_HGCalEndcapElements = new TEveElementList( "HGC EndCap" );
+    
+  // ----- showHGC EE --------------------------------------------------
+  std::vector<unsigned int> ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCEE );
+  for( std::vector<unsigned int>::const_iterator id = ids.begin();
+  id != ids.end(); ++id )
+  {
+    
+  // TEveGeoShape* shape = m_geom->getEveShape( *id ); // old vir
+  // HGCEEDetId idid = HGCEEDetId( *id );              // old vir
 	  
-	  // --  instead of m_geom->getEveShape( *id )-----
-	  const float* pnts = m_geom->getCorners( *id );
-	  TEveBox* box = new TEveBox();
-	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
-	  for( int i = 0;  i < 8; ++i){
-	    box->SetVertex(i, &pnts[3-arr[i]]);}
-	  addToCompound(box, kFWHGCEEndcapColorIndex);
-	  m_HGCalEndcapElements->AddElement( box );
-	  gEve->AddElement(box); //? maybe
-	  gEve->Redraw3D(kTRUE); //? maybe
-	  // -----------------------------------------------
-	  //  addToCompound(shape, kFWHGCEEndcapColorIndex); // old vir
-	  //  m_HGCalEEndcapElements->AddElement( shape ); // old vir	  
-	}
-      // ----- showHGC HEF --------------------------------------------------
-      ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEF );
-      for( std::vector<unsigned int>::const_iterator id = ids.begin();
-	   id != ids.end(); ++id )
-	{
-	  const float* pnts = m_geom->getCorners( *id );
-	  TEveBox* box = new TEveBox();
-	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
-	  for( int i = 0;  i < 8; ++i){
-	    box->SetVertex(i, &pnts[3-arr[i]]);}
-	  addToCompound(box,  kFWHGCHEndcapFrontColorIndex);
-	  m_HGCalEndcapElements->AddElement( box );
-	}
+  // --  instead of m_geom->getEveShape( *id )-----
+  const float* pnts = m_geom->getCorners( *id );
+  TEveBox* box = new TEveBox();
+  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+  for( int i = 0;  i < 8; ++i){
+  box->SetVertex(i, &pnts[3-arr[i]]);}
+  addToCompound(box, kFWHGCEEndcapColorIndex);
+  m_HGCalEndcapElements->AddElement( box );
+  gEve->AddElement(box); //? maybe
+  gEve->Redraw3D(kTRUE); //? maybe
+  // -----------------------------------------------
+  //  addToCompound(shape, kFWHGCEEndcapColorIndex); // old vir
+  //  m_HGCalEEndcapElements->AddElement( shape ); // old vir	  
+  }
+  // ----- showHGC HEF --------------------------------------------------
+  ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEF );
+  for( std::vector<unsigned int>::const_iterator id = ids.begin();
+  id != ids.end(); ++id )
+  {
+  const float* pnts = m_geom->getCorners( *id );
+  TEveBox* box = new TEveBox();
+  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+  for( int i = 0;  i < 8; ++i){
+  box->SetVertex(i, &pnts[3-arr[i]]);}
+  addToCompound(box,  kFWHGCHEndcapFrontColorIndex);
+  m_HGCalEndcapElements->AddElement( box );
+  }
 
-      // ----- showHGC HEB --------------------------------------------------
-      ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEB );
-      for( std::vector<unsigned int>::const_iterator id = ids.begin();
-	   id != ids.end(); ++id )
-	{
-	  const float* pnts = m_geom->getCorners( *id );
-	  TEveBox* box = new TEveBox();
-	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
-	  for( int i = 0;  i < 8; ++i){
-	    box->SetVertex(i, &pnts[3-arr[i]]);}
-	  addToCompound(box,  kFWHGCHEndcapBackColorIndex);
-	  m_HGCalEndcapElements->AddElement( box );
-	}
-      // ------------------------------------------------------------------
+  // ----- showHGC HEB --------------------------------------------------
+  ids = m_geom->getMatchedIds( FWGeometry::Calo, FWGeometry::HGCHEB );
+  for( std::vector<unsigned int>::const_iterator id = ids.begin();
+  id != ids.end(); ++id )
+  {
+  const float* pnts = m_geom->getCorners( *id );
+  TEveBox* box = new TEveBox();
+  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
+  for( int i = 0;  i < 8; ++i){
+  box->SetVertex(i, &pnts[3-arr[i]]);}
+  addToCompound(box,  kFWHGCHEndcapBackColorIndex);
+  m_HGCalEndcapElements->AddElement( box );
+  }
+  // ------------------------------------------------------------------
 
-      AddElement( m_HGCalEEndcapElements );
-    }
+  AddElement( m_HGCalEEndcapElements );
+  }
 
   if ( m_HGCalEndcapElements )
-    {
-      m_HGCalEndcapElements->SetRnrState( showHGC );
-      gEve->Redraw3D();
-    }
-}
+  {
+  m_HGCalEndcapElements->SetRnrState( showHGC );
+  gEve->Redraw3D();
+  }
+  }
 
 
 */
 
 
 //______________________________________________________________________________
+/*
 void 
 FW3DViewGeometry::showHGCEE( bool showHGCEE )
 {
@@ -566,7 +567,7 @@ FW3DViewGeometry::showHGCHEB( bool showHGCHEB )
 	   id != ids.end(); ++id )
 	{
 	  // TEveGeoShape* shape = m_geom->getEveShape( *id );
-	   // --  instead of m_geom->getEveShape( *id )-----
+	  // --  instead of m_geom->getEveShape( *id )-----
 	  const float* pnts = m_geom->getCorners( *id );
 	  TEveBox* box = new TEveBox();
 	  static unsigned arr[8] = { 0, 3, 2, 1, 5, 6, 7, 4};
@@ -589,6 +590,8 @@ FW3DViewGeometry::showHGCHEB( bool showHGCHEB )
       gEve->Redraw3D();
     }
 }
+*/
+
 //______________________________________________________________________________
 
 
